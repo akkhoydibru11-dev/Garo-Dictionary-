@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garo • Bangla • English Dictionary</title>
+<style>
+:root{--bg:#f4f7f3;--panel:#fff;--ink:#17251f;--muted:#66756d;--green:#176b4d;--green2:#e1f2e8;--line:#e1e8e2;--gold:#e5b84b;--shadow:0 14px 40px rgba(24,54,39,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif}
+header{background:linear-gradient(125deg,#103d30,#176b4d 65%,#2d8b64);color:#fff;padding:32px 18px 42px}
+.wrap{max-width:1050px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:800;letter-spacing:.2px}.pill{font-size:12px;padding:7px 11px;border:1px solid #ffffff55;border-radius:999px;color:#e5f5eb}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.12;margin:28px 0 10px;letter-spacing:-1px}header p{color:#d8eee1;margin:0;max-width:600px;line-height:1.7}
+.searchbox{margin-top:25px;background:#fff;border-radius:17px;padding:10px;display:flex;gap:8px;box-shadow:0 12px 32px #082c1e35}
+.searchbox input{border:0;outline:0;flex:1;min-width:0;font-size:16px;padding:12px;color:var(--ink)}button,select,input,textarea{font:inherit}
+button{cursor:pointer}.searchbox button,.primary{background:var(--green);color:#fff;border:0;border-radius:11px;padding:12px 16px;font-weight:700}
+main{padding:25px 18px 50px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:-42px;position:relative}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}.stat strong{display:block;font-size:23px;color:var(--green)}.stat span{font-size:12px;color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:27px 0 15px}.filters{display:flex;gap:8px;flex-wrap:wrap}
+select,.secondary{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;color:var(--ink)}
+.results-label{font-size:13px;color:var(--muted);margin:8px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.word{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(24,54,39,.035);transition:.18s}
+.word:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.wordtop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.garo{font-size:23px;font-weight:800;color:var(--green);overflow-wrap:anywhere}.english{font-weight:650;margin-top:10px}.bangla{font-size:18px;margin-top:5px}.category{display:inline-block;background:var(--green2);color:#176b4d;font-size:11px;padding:5px 8px;border-radius:999px;margin-top:12px}
+.star{background:transparent;border:1px solid var(--line);border-radius:10px;width:38px;height:38px;font-size:19px;color:#9aa79e}.star.on{color:#b27d00;background:#fff7d9;border-color:#f1d98e}
+.wordfoot{display:flex;justify-content:space-between;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.wordfoot button{background:none;border:0;color:var(--green);font-weight:700}
+.empty{grid-column:1/-1;text-align:center;background:#fff;border:1px dashed #cbd8cd;padding:42px 20px;border-radius:16px;color:var(--muted)}
+.note{margin-top:25px;padding:16px 18px;border-radius:13px;background:#fff8e6;border:1px solid #f0dfae;color:#725a20;font-size:13px;line-height:1.7}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:0 18px 28px}
+dialog{border:0;border-radius:18px;padding:0;width:min(520px,calc(100% - 28px));box-shadow:0 24px 90px #0004}dialog::backdrop{background:#10271dcc}.modal{padding:22px}.modal h2{margin:0 0 5px}.modal p{color:var(--muted);font-size:13px}.formgrid{display:grid;gap:12px;margin-top:17px}.formgrid label{font-size:13px;font-weight:700}.formgrid input,.formgrid select{width:100%;margin-top:6px;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff}.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:20px}.searchbox{align-items:stretch}.searchbox button{padding:10px}.toolbar{align-items:stretch}.filters{width:100%}.filters select{flex:1;min-width:0}.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top"><div class="brand">🌿 Garo Lexicon</div><span class="pill">GARO • বাংলা • ENGLISH</span></div>
+    <h1>Words connect<br>our worlds.</h1>
+    <p>একটি সহজ, অনুসন্ধানযোগ্য গারো–বাংলা–ইংরেজি শব্দভান্ডার। শব্দ খুঁজুন, শিখুন, আর নিজের collection তৈরি করুন।</p>
+    <div class="searchbox">
+      <input id="search" type="search" placeholder="Search Garo, বাংলা, or English…" aria-label="Search words">
+      <button id="clearBtn" type="button">Clear</button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section class="stats">
+    <div class="stat"><strong id="totalCount">0</strong><span>শব্দের তালিকায়</span></div>
+    <div class="stat"><strong id="shownCount">0</strong><span>এখন দেখাচ্ছে</span></div>
+    <div class="stat"><strong id="favCount">0</strong><span>পছন্দের শব্দ</span></div>
+  </section>
+  <div class="toolbar">
+    <div class="filters">
+      <select id="categoryFilter" aria-label="Filter by category"><option value="">সব ক্যাটাগরি</option></select>
+      <select id="viewFilter" aria-label="Choose view"><option value="all">সব শব্দ</option><option value="favorites">শুধু পছন্দের</option></select>
+    </div>
+    <button class="primary" id="addBtn" type="button">＋ শব্দ যোগ করুন</button>
+  </div>
+  <div class="results-label" id="resultsLabel">শব্দ লোড হচ্ছে…</div>
+  <section class="grid" id="wordGrid" aria-live="polite"></section>
+  <div class="note"><strong>সম্পাদকের নোট:</strong> এখানে থাকা শব্দগুলো শুধু ডেমো/নমুনা ডেটা। এগুলো Burling’s Garo Dictionary থেকে যাচাই করা পূর্ণ তালিকা নয়। নির্ভুল বানান ও অর্থ নিশ্চিত করে আসল অভিধানের শব্দ যোগ করুন।</div>
+</main>
+<footer>Garo Lexicon • Personal learning project • শব্দগুলো আপনার এই ব্রাউজারেই সংরক্ষিত হয়</footer>
+
+<dialog id="addDialog">
+  <form id="addForm" class="modal">
+    <h2>নতুন শব্দ যোগ করুন</h2>
+    <p>যাচাই করা শব্দ ও অর্থ লিখুন। এই ডিভাইসের ব্রাউজারে সংরক্ষিত হবে।</p>
+    <div class="formgrid">
+      <label>Garo word<input id="newGaro" required maxlength="100" placeholder="গারো শব্দ"></label>
+      <label>বাংলা অর্থ<input id="newBangla" required maxlength="180" placeholder="বাংলা অর্থ"></label>
+      <label>English meaning<input id="newEnglish" required maxlength="180" placeholder="English meaning"></label>
+      <label>Category<select id="newCategory"><option>Greetings</option><option>Family</option><option>Nature</option><option>Numbers</option><option>Daily Life</option><option>Other</option></select></label>
+    </div>
+    <div class="actions"><button type="button" class="secondary" id="cancelBtn">বাতিল</button><button class="primary" type="submit">সংরক্ষণ করুন</button></div>
+  </form>
+</dialog>
+<script>
+const starterWords = [
+  {id:1,garo:"Mande",bangla:"মান্দি / গারো জনগোষ্ঠী",english:"Mandi / Garo people",category:"Daily Life",demo:true},
+  {id:2,garo:"A·chik",bangla:"আ·চিক / গারো পরিচয়ের একটি নাম",english:"A·chik; a Garo self-designation",category:"Daily Life",demo:true},
+  {id:3,garo:"Chibima?",bangla:"তুমি কেমন আছ?",english:"How are you?",category:"Greetings",demo:true},
+  {id:4,garo:"Mitela",bangla:"ধন্যবাদ (যাচাই করুন)",english:"Thank you (verify)",category:"Greetings",demo:true},
+  {id:5,garo:"A·ba",bangla:"বাবা (যাচাই করুন)",english:"Father (verify)",category:"Family",demo:true},
+  {id:6,garo:"A·ma",bangla:"মা (যাচাই করুন)",english:"Mother (verify)",category:"Family",demo:true},
+  {id:7,garo:"Chi",bangla:"পানি (যাচাই করুন)",english:"Water (verify)",category:"Nature",demo:true},
+  {id:8,garo:"Sal",bangla:"সূর্য / দিন (যাচাই করুন)",english:"Sun / day (verify)",category:"Nature",demo:true}
+];
+const STORAGE_WORDS="garoLexiconWords_v1", STORAGE_FAVS="garoLexiconFavorites_v1";
+let customWords=[];
+let favorites=new Set();
+try{customWords=JSON.parse(localStorage.getItem(STORAGE_WORDS)||"[]")}catch(e){customWords=[]}
+try{favorites=new Set(JSON.parse(localStorage.getItem(STORAGE_FAVS)||"[]"))}catch(e){favorites=new Set()}
+let words=[...starterWords,...customWords];
+const $=id=>document.getElementById(id);
+const normalize=s=>String(s||"").toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+function save(){localStorage.setItem(STORAGE_WORDS,JSON.stringify(customWords));localStorage.setItem(STORAGE_FAVS,JSON.stringify([...favorites]))}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function buildCategories(){
+ const select=$("categoryFilter"), chosen=select.value;
+ const cats=[...new Set(words.map(w=>w.category))].sort();
+ select.innerHTML='<option value="">সব ক্যাটাগরি</option>'+cats.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+ select.value=cats.includes(chosen)?chosen:"";
+}
+function render(){
+ const q=normalize($("search").value), cat=$("categoryFilter").value, onlyFav=$("viewFilter").value==="favorites";
+ const filtered=words.filter(w=>{
+  const text=normalize([w.garo,w.bangla,w.english,w.category].join(" "));
+  return (!q||text.includes(q))&&(!cat||w.category===cat)&&(!onlyFav||favorites.has(w.id));
+ });
+ $("totalCount").textContent=words.length;$("shownCount").textContent=filtered.length;$("favCount").textContent=favorites.size;
+ $("resultsLabel").textContent=`${filtered.length}টি শব্দ পাওয়া গেছে`;
+ const grid=$("wordGrid");
+ if(!filtered.length){grid.innerHTML='<div class="empty"><div style="font-size:32px">⌕</div><strong>কোনো শব্দ পাওয়া যায়নি</strong><p>অন্য বানান দিয়ে খুঁজুন, অথবা নতুন শব্দ যোগ করুন।</p></div>';return}
+ grid.innerHTML=filtered.map(w=>`<article class="word">
+  <div class="wordtop"><div><div class="garo">${escapeHTML(w.garo)}</div><div class="english">${escapeHTML(w.english)}</div><div class="bangla">${escapeHTML(w.bangla)}</div></div>
+  <button class="star ${favorites.has(w.id)?"on":""}" data-fav="${w.id}" aria-label="Toggle favorite" title="পছন্দের তালিকায় রাখুন">${favorites.has(w.id)?"★":"☆"}</button></div>
+  <span class="category">${escapeHTML(w.category)}</span>
+  <div class="wordfoot"><span>${w.demo?"ডেমো শব্দ • যাচাই করুন":"নিজে যোগ করেছেন"}</span><button data-copy="${w.id}">কপি করুন</button></div>
+ </article>`).join("");
+}
+$("wordGrid").addEventListener("click",e=>{
+ const fav=e.target.closest("[data-fav]");const cp=e.target.closest("[data-copy]");
+ if(fav){const id=Number(fav.dataset.fav);favorites.has(id)?favorites.delete(id):favorites.add(id);save();render()}
+ if(cp){const w=words.find(x=>x.id===Number(cp.dataset.copy));if(w){const text=`${w.garo} — ${w.bangla} — ${w.english}`;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>cp.textContent="কপি হয়েছে").catch(()=>window.prompt("কপি করুন:",text))}else window.prompt("কপি করুন:",text)}}
+});
+$("search").addEventListener("input",render);$("categoryFilter").addEventListener("change",render);$("viewFilter").addEventListener("change",render);
+$("clearBtn").addEventListener("click",()=>{$("search").value="";$("categoryFilter").value="";$("viewFilter").value="all";render();$("search").focus()});
+$("addBtn").addEventListener("click",()=>$("addDialog").showModal());$("cancelBtn").addEventListener("click",()=>$("addDialog").close());
+$("addForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const word={id:Date.now(),garo:$("newGaro").value.trim(),bangla:$("newBangla").value.trim(),english:$("newEnglish").value.trim(),category:$("newCategory").value,demo:false};
+ if(!word.garo||!word.bangla||!word.english)return;
+ customWords.push(word);words.push(word);save();buildCategories();$("addForm").reset();$("addDialog").close();$("search").value=word.garo;$("categoryFilter").value="";$("viewFilter").value="all";render();
+});
+buildCategories();render();
+</script>
+</body>
+</html>
